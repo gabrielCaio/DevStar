@@ -1,0 +1,11 @@
+# NodeModules
+node_modules
+
+# Dotenv
+.env
+
+# Ignore built ts files
+dist/**/*
+
+# ignore yarn.lock
+yarn.lock
