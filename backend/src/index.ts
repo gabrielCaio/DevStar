@@ -1,5 +1,5 @@
 const dotenv = require('dotenv').config()
-const express = require('express')
+import express from 'express'
 const morgan = require('morgan')
 
 // Get port from dotenv
@@ -9,9 +9,10 @@ const port = process.env.PORT;
 const app = express()
 
 // Get routes from ./routes.ts
-const route = require('./routes')
+import route from './routes'
 
 // Set the middlewares
+app.use(express.json())
 app.use(morgan('tiny'))
 
 // Set the router
