@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,8 +12,25 @@ model User {
   name String
   createdAt DateTime @default(now())
   posts Post[]
+  videos Video[]
 
   @@map("user")
+}
+
+model Video {
+  id String @id @default(uuid())
+  title String
+  content Bytes @db.ByteA
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id String @id @default(uuid())
+  title String
+  content Bytes @db.ByteA
 }
 
 model Post {
@@ -29,4 +43,3 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-// TODO: Run migration
