@@ -21,8 +21,8 @@ model Video {
   id String @id @default(uuid())
   title String
   content Bytes @db.ByteA
-  authorId String
-  author User @relation(fields: [authorId], references: [id])
+  creatorId String
+  creator User @relation(fields: [creatorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
