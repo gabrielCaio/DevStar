@@ -19,7 +19,8 @@ router.post('/post/create', postController.createPost)
 router.get('/post/listall', postController.getAllPosts)
 
 // Video
-router.post('/video/create', videoController.createVideo)
+router.post('/video/create/:id/:title', videoController.createVideo)
 router.get('/video/listall', videoController.listall)
+router.delete('video/delete', videoController.deleteVideo)
 
 export default router
