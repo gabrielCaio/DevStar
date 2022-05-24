@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { Multer } from '../config/multer'
 import { prisma } from '../database/client'
+import { Readable } from 'stream'
 
 export const videoController = {
     async listall(req: Request, res: Response) {
@@ -61,6 +62,25 @@ export const videoController = {
             return res.status(204).json({})
         } catch (err) {
             return res.status(500).send({ error: "Error deleting video" })
+        }
+    },
+    async watchVideo(req: Request, res: Response) {
+        const { id } = req.params
+        try {
+            const video = await prisma.video.findUnique({ where: { id: id }})
+
+            if(video === undefined) return res.status(404).json({ error: "Video not found" })
+
+            const buffer = video?.content
+            const readable = new Readable()
+            readable._read = () => {}
+            readable.push(buffer)
+            readable.push(null)
+
+            readable.pipe(res)
+
+        } catch (err) {
+            return res.status(500).send({ error: "Error getting video" })
         }
     },
 }
