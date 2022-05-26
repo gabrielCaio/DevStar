@@ -11,8 +11,10 @@ model User {
   id String @id @default(uuid())
   name String
   createdAt DateTime @default(now())
-  posts Post[]
+  avatar Bytes? @db.ByteA
   videos Video[]
+  likes Likes[]
+  comments Comments[]
 
   @@map("user")
 }
@@ -20,26 +22,35 @@ model User {
 model Video {
   id String @id @default(uuid())
   title String
+  size Int? // TODO: remove this after migration
   content Bytes @db.ByteA
+  thumbnail Bytes? @db.ByteA
   creatorId String
   creator User @relation(fields: [creatorId], references: [id])
+  likes Likes[]
+  qntLikes Int @default(0)
+  comments Comments[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Image {
-  id String @id @default(uuid())
-  title String
-  content Bytes @db.ByteA
-}
-
-model Post {
-  id Int @id @default(autoincrement())
-  title String
-  content String?
-  available Boolean @default(true)
+model Comments {
+  comment String
+  videoId String
+  video Video @relation(fields: [videoId], references: [id])
   authorId String
   author User @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([videoId, authorId])
+}
+
+model Likes {
+  videoId String
+  video Video @relation(fields: [videoId], references: [id])
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([videoId, userId])
 }
