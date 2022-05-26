@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import multer from "multer";
 import path from "path"
 import crypto from 'crypto'
@@ -43,4 +44,30 @@ const config = {
     },
 }
 
-export const Multer = multer(config)
+export type FileType = {
+    buffer: Buffer,
+    size: number
+}
+
+class MyMulter {
+    __multer: multer.Multer = multer(config);
+
+    single(req: Request, res: Response): Promise<FileType> {
+        const upload = this.__multer.single("file")
+
+        return new Promise((resolve, reject) => {
+            upload(req, res, function(err) {
+                if(err) return reject(err);
+                const file = req.file
+
+                if(file === undefined) return reject("File not found")
+
+                const returnFile: FileType = { buffer: file.buffer, size: file.size }
+                
+                resolve(returnFile)
+            })
+        })
+    }
+}
+
+export const Multer = new MyMulter()
