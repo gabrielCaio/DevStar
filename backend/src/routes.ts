@@ -2,7 +2,6 @@ import { Request, Response, Router } from 'express'
 const router = Router()
 
 import { userController } from './controllers/userController'
-import { postController } from './controllers/postController'
 import { videoController } from './controllers/videoController'
 
 // Test
@@ -14,14 +13,10 @@ router.get('/', (req: Request, res: Response) => {
 router.post('/user/create', userController.createUser)
 router.get('/user/listall',userController.getUsers)
 
-// Post
-router.post('/post/create', postController.createPost)
-router.get('/post/listall', postController.getAllPosts)
-
 // Video
 router.post('/video/create/:id/:title', videoController.createVideo)
 router.get('/video/listall', videoController.listall)
 router.get('/video/watch/:id', videoController.watchVideo)
-router.delete('video/delete', videoController.deleteVideo)
+router.delete('/video/delete/:id', videoController.deleteVideo)
 
 export default router
