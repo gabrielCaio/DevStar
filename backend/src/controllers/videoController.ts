@@ -15,40 +15,33 @@ export const videoController = {
                     updatedAt: true,
                 }
             })
-    
+
             return res.json(videos);
         } catch (err) {
-            return res.status(500).json({ error: "Erro ao listar videos"})
+            return res.status(500).json({ error: "Erro ao listar videos" })
         }
     },
-    async createVideo(req:Request, res: Response) {
+    async createVideo(req: Request, res: Response) {
         try {
-            const upload = Multer.single("file")
+            const { title, id: creatorId } = req.params
+            const { buffer, size } = await Multer.single(req, res)
 
-            upload(req, res, async function(err) {
-                if(err) return res.status(400).json({ error: err.message })
+            console.log(buffer)
 
-                const file = req.file
-                const { title, id: creatorId } = req.params
-
-                if(file?.buffer === undefined) return res.status(400).json({error: "File not loaded"})
-
-                const videoBuffer = file.buffer
-
-                const video = await prisma.video.create({
-                    data: {
-                        title,
-                        content: videoBuffer,
-                        creator: {
-                            connect: { id: creatorId }
-                        }
-                    },
-                })
-
-                let { content, ...data } = video
-
-                return res.json(data)
+            const video = await prisma.video.create({
+                data: {
+                    title,
+                    size: size,
+                    content: buffer,
+                    creator: {
+                        connect: { id: creatorId }
+                    }
+                },
             })
+
+            let { content, ...data } = video
+
+            return res.json(data)
         } catch (err) {
             return res.status(400).json({ error: "Error creating file" })
         }
@@ -67,13 +60,13 @@ export const videoController = {
     async watchVideo(req: Request, res: Response) {
         const { id } = req.params
         try {
-            const video = await prisma.video.findUnique({ where: { id: id }})
+            const video = await prisma.video.findUnique({ where: { id: id } })
 
-            if(video === undefined) return res.status(404).json({ error: "Video not found" })
+            if (video === null) return res.status(404).json({ error: "Video not found" })
 
-            const buffer = video?.content
+            const buffer = video.content
             const readable = new Readable()
-            readable._read = () => {}
+            readable._read = () => { }
             readable.push(buffer)
             readable.push(null)
 
