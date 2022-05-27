@@ -51,6 +51,8 @@ export const userController = {
         }
     },
     //#endregion
+
+    //#region : Avatar
     async saveAvatar(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -83,4 +85,21 @@ export const userController = {
             return res.status(500).json({ error: "Error getting avatar"})
         }
     },
+    //#endregion
+
+    async getVideosLiked(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+
+            const videosLiked = await prisma.likes.findMany({
+                select: { videoId: true },
+                where: { userId: id },
+            })
+
+            return res.json(videosLiked)
+        } catch (err) {
+            return res.status(500).json({ error: "Server Error"})
+        }
+    },
+
 }

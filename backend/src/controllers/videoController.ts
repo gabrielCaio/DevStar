@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { Multer } from '../services/multer'
 import { prisma } from '../database/client'
 import { Readable } from 'stream'
+import { VideoNoBuffer } from '../database/models/Video'
 
 export const videoController = {
     //#region : CRUD Video
@@ -78,7 +79,9 @@ export const videoController = {
         }
     },
     //#endregion
-    async saveThumbnail(req: Request, res: Response,) {
+    
+    //#region : Thumbnail
+    async saveThumbnail(req: Request, res: Response) {
         try {
             const { id } = req.params
 
@@ -96,7 +99,7 @@ export const videoController = {
             return res.status(400).json({ error: "Error saving thumbnail"})
         }
     },
-    async showThumbnail(req: Request, res: Response,) {
+    async showThumbnail(req: Request, res: Response) {
         try {
             const { id } = req.params
 
@@ -110,6 +113,25 @@ export const videoController = {
             return res.end(video.thumbnail)
         } catch (err) {
             return res.status(500).json({ error: "Error showing thumbnail"})
+        }
+    },
+    //#endregion
+
+    async likeVideo(req: Request, res: Response) {
+        try {
+            const { videoId, userId } = req.body
+
+            const video = await prisma.video.update({
+                select: VideoNoBuffer,
+                where: { id: videoId },
+                data: { qntLikes: { increment: 1 }, likes: {create: {userId}} }
+            })
+
+            if(video === null) return res.status(400).json({ error: "Video not found" })
+
+            return res.json(video);
+        } catch (err) {
+            return res.status(500).json({ error: "Error liking video"})
         }
     }
 }

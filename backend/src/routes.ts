@@ -15,6 +15,7 @@ router.get('/user/listall',userController.getUsers)
 router.get('/user/get/:id', userController.getUser)
 router.patch('/user/saveAvatar/:id', userController.saveAvatar)
 router.get('/user/getAvatar/:id', userController.getAvatar)
+router.get('/user/videosLiked/:id', userController.getVideosLiked)
 // FIXME: fix this route
 // router.delete('/user/delete/:id', userController.deleteUser)
 
@@ -25,5 +26,6 @@ router.get('/video/watch/:id', videoController.watchVideo)
 router.delete('/video/delete/:id', videoController.deleteVideo)
 router.patch('/video/saveThumbnail/:id', videoController.saveThumbnail)
 router.get('/video/showThumbnail/:id', videoController.showThumbnail)
+router.patch('/video/like', videoController.likeVideo)
 
 export default router
