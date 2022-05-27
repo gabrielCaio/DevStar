@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { prisma } from '../database/client'
 import { Multer } from '../services/multer'
 import { cleanUser } from '../database/models/User'
+import { generateToken } from '../services/jwt'
 
 export const userController = {
     //#region : CRUD User
@@ -16,10 +17,10 @@ export const userController = {
     },
     async createUser(req: Request, res: Response) {
         try {
-            const { name } = req.body
+            const { name, email, password } = req.body
 
             const user = await prisma.user.create({
-                data: { name }
+                data: { name, email, password }
             })
 
             return res.json(user)
@@ -99,6 +100,27 @@ export const userController = {
             return res.json(videosLiked)
         } catch (err) {
             return res.status(500).json({ error: "Server Error"})
+        }
+    },
+
+    async login(req: Request, res: Response) {
+        try {
+            const { email, password } = req.body
+
+            const user = await prisma.user.findUnique({ where: { email: email }})
+
+            if(user === null) return res.status(400).json({ error: 'User not found'})
+
+            if(user.password !== password) return res.status(400).json({ error: 'Password incorrect'})
+
+            const { password: pwd, ...data } = user
+
+            const token = generateToken({ id: user.id })
+
+            return res.json({ user, token })
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Login Error" })
         }
     },
 

@@ -15,6 +15,8 @@ router.delete('/user/delete/:id', userController.deleteUser)
 router.get('/user/listall',userController.getUsers)
 router.get('/user/get/:id', userController.getUser)
 
+router.post('/user/login', userController.login)
+
 router.patch('/user/saveAvatar/:id', userController.saveAvatar)
 router.get('/user/getAvatar/:id', userController.getAvatar)
 router.get('/user/videosLiked/:id', userController.getVideosLiked)
