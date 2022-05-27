@@ -59,10 +59,12 @@ export const userController = {
 
             const user = await prisma.user.update({
                 where: { id: id },
-                data: { avatar: buffer }
+                data: { avatar: buffer, hasAvatar: true }
             })
 
-            return res.json(user)
+            const { avatar, ...data } = user
+
+            return res.json(data)
         }catch (err) {
             return res.status(500).json({ error: "Error saving avatar"})
         }
@@ -75,9 +77,7 @@ export const userController = {
             
             if(user === null || user.avatar === null) return res.send(400).json({ error: 'User not found, or avatar missing'})
 
-            const { avatar } = user
-
-            return res.end(avatar)
+            return res.end(user.avatar)
         }catch (err) {
             console.log(err)
             return res.status(500).json({ error: "Error getting avatar"})

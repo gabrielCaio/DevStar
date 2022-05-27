@@ -78,4 +78,38 @@ export const videoController = {
         }
     },
     //#endregion
+    async saveThumbnail(req: Request, res: Response,) {
+        try {
+            const { id } = req.params
+
+            const { buffer } = await Multer.singleImage(req, res)
+
+            const video = await prisma.video.update({
+                where: { id: id },
+                data: { thumbnail: buffer, hasThumbnail: true }
+            })
+
+            const { thumbnail, content, ...data } = video
+
+            return res.json(data)
+        } catch (err) {
+            return res.status(400).json({ error: "Error saving thumbnail"})
+        }
+    },
+    async showThumbnail(req: Request, res: Response,) {
+        try {
+            const { id } = req.params
+
+            const video = await prisma.video.findUnique({
+                select: { thumbnail: true },
+                where: { id: id },
+            })
+
+            if(video === null || video.thumbnail === null) return res.status(400).json({error: "Video not found"})
+
+            return res.end(video.thumbnail)
+        } catch (err) {
+            return res.status(500).json({ error: "Error showing thumbnail"})
+        }
+    }
 }

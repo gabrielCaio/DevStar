@@ -23,5 +23,7 @@ router.post('/video/create/:id/:title', videoController.createVideo)
 router.get('/video/listall', videoController.listall)
 router.get('/video/watch/:id', videoController.watchVideo)
 router.delete('/video/delete/:id', videoController.deleteVideo)
+router.patch('/video/saveThumbnail/:id', videoController.saveThumbnail)
+router.get('/video/showThumbnail/:id', videoController.showThumbnail)
 
 export default router
