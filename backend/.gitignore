@@ -16,3 +16,6 @@ package-lock.json
 
 # uploads
 tmp/
+
+#teste
+index.html

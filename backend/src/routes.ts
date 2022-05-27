@@ -13,6 +13,8 @@ router.get('/', (req: Request, res: Response) => {
 router.post('/user/create', userController.createUser)
 router.get('/user/listall',userController.getUsers)
 router.get('/user/get/:id', userController.getUser)
+router.patch('/user/saveAvatar/:id', userController.saveAvatar)
+router.get('/user/getAvatar/:id', userController.getAvatar)
 // FIXME: fix this route
 // router.delete('/user/delete/:id', userController.deleteUser)
 
