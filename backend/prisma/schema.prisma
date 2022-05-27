@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
-  email String? @unique //TODO: Make this required
-  password String? //TODO: Make this required
+  email String @unique
+  password String
   name String
   createdAt DateTime @default(now())
   avatar Bytes? @db.ByteA
@@ -25,7 +25,7 @@ model User {
 model Video {
   id String @id @default(uuid())
   title String
-  size Int? // TODO: remove this after migration
+  size Int
   content Bytes @db.ByteA
   thumbnail Bytes? @db.ByteA
   hasThumbnail Boolean @default(false)
