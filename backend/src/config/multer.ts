@@ -1,4 +1,3 @@
-import { Request, Response } from 'express'
 import multer from "multer";
 import path from "path"
 import crypto from 'crypto'
@@ -21,16 +20,11 @@ const storageType = {
     memory: multer.memoryStorage()
 }
 
-const config = {
-    // dest: path.resolve(__dirname, "..", "..", "tmp"),
+const configVideo = {
     storage: storageType.memory,
     limits: { fileSize: 50 * 1024 * 1024 },
     fileFilter: (req: any, file: any, cb: any) => {
         const allowedMimes = [
-            "image/jpeg",
-            "image/pjpeg",
-            "image/png",
-            "image/gif",
             "video/mp4",
             "video/mpeg",
             "video/mkv"
@@ -44,30 +38,22 @@ const config = {
     },
 }
 
-export type FileType = {
-    buffer: Buffer,
-    size: number
+const configImage = {
+    storage: storageType.memory,
+    limits: { fileSize: 50 * 1024 * 1024 },
+    fileFilter: (req: any, file: any, cb: any) => {
+        const allowedMimes = [
+            "image/jpeg",
+            "image/pjpeg",
+            "image/png",
+        ];
+
+        if (allowedMimes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error("Invalid file type"));
+        }
+    },
 }
 
-class MyMulter {
-    __multer: multer.Multer = multer(config);
-
-    single(req: Request, res: Response): Promise<FileType> {
-        const upload = this.__multer.single("file")
-
-        return new Promise((resolve, reject) => {
-            upload(req, res, function(err) {
-                if(err) return reject(err);
-                const file = req.file
-
-                if(file === undefined) return reject("File not found")
-
-                const returnFile: FileType = { buffer: file.buffer, size: file.size }
-                
-                resolve(returnFile)
-            })
-        })
-    }
-}
-
-export const Multer = new MyMulter()
+export { configImage, configVideo }

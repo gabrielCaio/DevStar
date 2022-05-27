@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
-import { Multer } from '../config/multer'
+import { Multer } from '../services/multer'
 import { prisma } from '../database/client'
 import { Readable } from 'stream'
 
 export const videoController = {
+    //#region : CRUD Video
     async listall(req: Request, res: Response) {
         try {
             const videos = await prisma.video.findMany({
@@ -24,7 +25,7 @@ export const videoController = {
     async createVideo(req: Request, res: Response) {
         try {
             const { title, id: creatorId } = req.params
-            const { buffer, size } = await Multer.single(req, res)
+            const { buffer, size } = await Multer.singleVideo(req, res)
 
             console.log(buffer)
 
@@ -52,7 +53,7 @@ export const videoController = {
 
             const deletedVideo = await prisma.video.delete({ where: { id: id } })
 
-            return res.status(204).json(deletedVideo)
+            return res.status(200).json(deletedVideo)
         } catch (err) {
             return res.status(400).send({ error: "Video not found" })
         }
@@ -76,4 +77,5 @@ export const videoController = {
             return res.status(500).send({ error: "Error getting video" })
         }
     },
+    //#endregion
 }

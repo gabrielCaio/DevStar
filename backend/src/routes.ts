@@ -12,6 +12,9 @@ router.get('/', (req: Request, res: Response) => {
 // User
 router.post('/user/create', userController.createUser)
 router.get('/user/listall',userController.getUsers)
+router.get('/user/get/:id', userController.getUser)
+// FIXME: fix this route
+// router.delete('/user/delete/:id', userController.deleteUser)
 
 // Video
 router.post('/video/create/:id/:title', videoController.createVideo)
