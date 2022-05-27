@@ -52,10 +52,11 @@ export const videoController = {
         try {
             const { id } = req.params
 
-            const deletedVideo = await prisma.video.delete({ where: { id: id } })
+            const deleteVideo = await prisma.video.delete({ where: { id: id } })
 
-            return res.status(200).json(deletedVideo)
+            return res.status(204)
         } catch (err) {
+            console.log(err)
             return res.status(400).send({ error: "Video not found" })
         }
     },

@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
 import { prisma } from '../database/client'
 import { Multer } from '../services/multer'
+import { cleanUser } from '../database/models/User'
 
 export const userController = {
     //#region : CRUD User
     async getUsers(req: Request, res: Response) {
         try {
-            const allUsers = await prisma.user.findMany()
+            const allUsers = await prisma.user.findMany({ select: cleanUser })
 
             return res.json(allUsers)
         } catch (err) {
@@ -26,14 +27,13 @@ export const userController = {
             return res.status(400).json({ error: err })
         }
     },
-    // FIXME: not delete user and only mark him with isDeleted = true
     async deleteUser(req: Request, res: Response) {
         try {
             const { id } = req.params
 
             const user = await prisma.user.delete({ where: {id: id} })
 
-            return res.json(user)
+            return res.status(204)
         }catch(err) {
             console.log(err)
             return res.status(400).json({ error: "User not found" })
@@ -43,7 +43,7 @@ export const userController = {
         try {
             const { id } = req.params
 
-            const user = await prisma.user.findUnique({ where: {id: id} })
+            const user = await prisma.user.findUnique({ select: cleanUser, where: {id: id} })
 
             return res.json(user)
         } catch (err) {

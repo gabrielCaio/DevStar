@@ -9,6 +9,8 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
+  email String? @unique //TODO: Make this required
+  password String? //TODO: Make this required
   name String
   createdAt DateTime @default(now())
   avatar Bytes? @db.ByteA
@@ -28,7 +30,7 @@ model Video {
   thumbnail Bytes? @db.ByteA
   hasThumbnail Boolean @default(false)
   creatorId String
-  creator User @relation(fields: [creatorId], references: [id])
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   likes Likes[]
   qntLikes Int @default(0)
   comments Comments[]
@@ -40,9 +42,9 @@ model Video {
 model Comments {
   comment String
   videoId String
-  video Video @relation(fields: [videoId], references: [id])
+  video Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
   authorId String
-  author User @relation(fields: [authorId], references: [id])
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -51,9 +53,9 @@ model Comments {
 
 model Likes {
   videoId String
-  video Video @relation(fields: [videoId], references: [id])
+  video Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([videoId, userId])
 }
