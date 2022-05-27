@@ -88,6 +88,7 @@ export const userController = {
     },
     //#endregion
 
+    // Return array of liked videos
     async getVideosLiked(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -103,21 +104,27 @@ export const userController = {
         }
     },
 
+    // User login, returns token and data
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body
 
             const user = await prisma.user.findUnique({ where: { email: email }})
 
+            // Check if user exists
             if(user === null) return res.status(400).json({ error: 'User not found'})
 
+            // Check password
             if(user.password !== password) return res.status(400).json({ error: 'Password incorrect'})
 
+            // remove password
             const { password: pwd, ...data } = user
 
+            // generateToken
             const token = generateToken({ id: user.id })
 
-            return res.json({ user, token })
+            // return user data and token
+            return res.json({ data, token })
         } catch (err) {
             console.log(err)
             return res.status(500).json({ error: "Login Error" })

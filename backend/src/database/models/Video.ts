@@ -9,3 +9,10 @@ export const VideoNoBuffer = {
     createdAt: true,
     updatedAt: true,
 }
+
+export const VideoWithComments = {
+    id: true,
+    title: true,
+    comments: true,
+    qntComments: true,
+}

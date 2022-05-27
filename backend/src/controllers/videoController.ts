@@ -28,8 +28,6 @@ export const videoController = {
             const { title, id: creatorId } = req.params
             const { buffer, size } = await Multer.singleVideo(req, res)
 
-            console.log(buffer)
-
             const video = await prisma.video.create({
                 data: {
                     title,
@@ -134,5 +132,5 @@ export const videoController = {
         } catch (err) {
             return res.status(500).json({ error: "Error liking video"})
         }
-    }
+    },
 }
