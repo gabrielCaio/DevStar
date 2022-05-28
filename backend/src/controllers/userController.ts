@@ -30,7 +30,7 @@ export const userController = {
     },
     async deleteUser(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const id = req.userId
 
             const user = await prisma.user.delete({ where: {id: id} })
 
@@ -56,7 +56,7 @@ export const userController = {
     //#region : Avatar
     async saveAvatar(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const id = req.userId
 
             const { buffer } = await Multer.singleImage(req, res)
 

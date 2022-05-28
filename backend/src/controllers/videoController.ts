@@ -25,7 +25,9 @@ export const videoController = {
     },
     async createVideo(req: Request, res: Response) {
         try {
-            const { title, id: creatorId } = req.params
+            const creatorId = req.userId
+
+            const { title } = req.params
             const { buffer, size } = await Multer.singleVideo(req, res)
 
             const video = await prisma.video.create({

@@ -27,7 +27,6 @@ export function authUser(req: Request, res: Response, next: NextFunction) {
 
         const newDecoded = decoded as Decoded
         req.userId = newDecoded.id;
-        console.log(req.userId)
     
         return next();
       });
