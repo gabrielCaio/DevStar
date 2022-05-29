@@ -3,6 +3,7 @@ import { prisma } from '../database/client'
 import { Multer } from '../services/multer'
 import { cleanUser } from '../database/models/User'
 import { generateToken } from '../services/jwt'
+import { errorHandler } from '../middlewares/errorHandler'
 
 export const userController = {
     //#region : CRUD User
@@ -12,7 +13,7 @@ export const userController = {
 
             return res.json(allUsers)
         } catch (err) {
-            return res.status(400).json({ error: err })
+            return errorHandler(req, res, err)
         }
     },
     async createUser(req: Request, res: Response) {
@@ -25,7 +26,7 @@ export const userController = {
 
             return res.json(user)
         } catch (err) {
-            return res.status(400).json({ error: err })
+            return errorHandler(req, res, err)
         }
     },
     async deleteUser(req: Request, res: Response) {
@@ -36,8 +37,7 @@ export const userController = {
 
             return res.status(204)
         }catch(err) {
-            console.log(err)
-            return res.status(400).json({ error: "User not found" })
+            return errorHandler(req, res, err)
         }
     },
     async getUser(req: Request, res: Response) {
@@ -48,7 +48,7 @@ export const userController = {
 
             return res.json(user)
         } catch (err) {
-            return res.status(404).json({ error: "User not found"})
+            return errorHandler(req, res, err)
         }
     },
     //#endregion
@@ -69,7 +69,7 @@ export const userController = {
 
             return res.json(data)
         }catch (err) {
-            return res.status(500).json({ error: "Error saving avatar"})
+            return errorHandler(req, res, err)
         }
     },
     async getAvatar(req: Request, res: Response) {
@@ -82,13 +82,11 @@ export const userController = {
 
             return res.end(user.avatar)
         }catch (err) {
-            console.log(err)
-            return res.status(500).json({ error: "Error getting avatar"})
+            return errorHandler(req, res, err)
         }
     },
     //#endregion
 
-    // Return array of liked videos
     async getVideosLiked(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -100,11 +98,10 @@ export const userController = {
 
             return res.json(videosLiked)
         } catch (err) {
-            return res.status(500).json({ error: "Server Error"})
+            return errorHandler(req, res, err)
         }
     },
 
-    // User login, returns token and data
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body
@@ -126,9 +123,8 @@ export const userController = {
             // return user data and token
             return res.json({ data, token })
         } catch (err) {
-            console.log(err)
-            return res.status(500).json({ error: "Login Error" })
+            return errorHandler(req, res, err)
         }
     },
-
+    
 }

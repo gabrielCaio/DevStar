@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '../database/client'
+import { errorHandler } from '../middlewares/errorHandler'
 
 export const commentController = {
     async createComment(req: Request, res: Response) {
@@ -16,8 +17,7 @@ export const commentController = {
 
             return res.json(newComment)
         } catch (err) {
-            console.log(err)
-            return res.status(500).json({ error: "Error creating comment" })
+            return errorHandler(req, res, err)
         }
     },
 
@@ -29,7 +29,7 @@ export const commentController = {
 
             return res.json(comments)
         } catch (err) {
-            return res.status(500).json({ error: "Server Error" })
+            return errorHandler(req, res, err)
         }
     },
 
@@ -41,7 +41,7 @@ export const commentController = {
 
             return res.json(comments)
         } catch (err) {
-            return res.status(500).json({ error: "Error Getting comments"})
+            return errorHandler(req, res, err)
         }
     },
 
@@ -51,7 +51,7 @@ export const commentController = {
 
             return res.json(comments)
         } catch (err) {
-            return res.status(500).json({ error: "Server error"})
+            return errorHandler(req, res, err)
         }
     },
 
@@ -66,9 +66,9 @@ export const commentController = {
 
             const aux = await prisma.comments.delete({ where: { id: id } })
 
-            return res.status(204).json()
+            return res.status(204)
         } catch (err) {
-            return res.status(500).json({ error: "Server Error"})
+            return errorHandler(req, res, err)
         }
     },
 }

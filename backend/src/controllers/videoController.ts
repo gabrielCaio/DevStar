@@ -3,6 +3,7 @@ import { Multer } from '../services/multer'
 import { prisma } from '../database/client'
 import { Readable } from 'stream'
 import { VideoNoBuffer } from '../database/models/Video'
+import { errorHandler } from '../middlewares/errorHandler'
 
 export const videoController = {
     //#region : CRUD Video
@@ -20,7 +21,7 @@ export const videoController = {
 
             return res.json(videos);
         } catch (err) {
-            return res.status(500).json({ error: "Erro ao listar videos" })
+            return errorHandler(req, res, err)
         }
     },
     async createVideo(req: Request, res: Response) {
@@ -45,7 +46,7 @@ export const videoController = {
 
             return res.json(data)
         } catch (err) {
-            return res.status(400).json({ error: "Error creating file" })
+            return errorHandler(req, res, err)
         }
     },
     async deleteVideo(req: Request, res: Response) {
@@ -56,8 +57,7 @@ export const videoController = {
 
             return res.status(204)
         } catch (err) {
-            console.log(err)
-            return res.status(400).send({ error: "Video not found" })
+            return errorHandler(req, res, err)
         }
     },
     async watchVideo(req: Request, res: Response) {
@@ -76,7 +76,7 @@ export const videoController = {
             readable.pipe(res)
 
         } catch (err) {
-            return res.status(500).send({ error: "Error getting video" })
+            return errorHandler(req, res, err)
         }
     },
     //#endregion
@@ -97,7 +97,7 @@ export const videoController = {
 
             return res.json(data)
         } catch (err) {
-            return res.status(400).json({ error: "Error saving thumbnail"})
+            return errorHandler(req, res, err)
         }
     },
     async showThumbnail(req: Request, res: Response) {
@@ -113,7 +113,7 @@ export const videoController = {
 
             return res.end(video.thumbnail)
         } catch (err) {
-            return res.status(500).json({ error: "Error showing thumbnail"})
+            return errorHandler(req, res, err)
         }
     },
     //#endregion
@@ -132,7 +132,7 @@ export const videoController = {
 
             return res.json(video);
         } catch (err) {
-            return res.status(500).json({ error: "Error liking video"})
+            return errorHandler(req, res, err)
         }
     },
 }
