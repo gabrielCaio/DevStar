@@ -6,7 +6,6 @@ import { VideoNoBuffer } from '../database/models/Video'
 import { errorHandler } from '../middlewares/errorHandler'
 
 export const videoController = {
-    //#region : CRUD Video
     async listall(req: Request, res: Response) {
         try {
             const videos = await prisma.video.findMany({
@@ -24,6 +23,7 @@ export const videoController = {
             return errorHandler(req, res, err)
         }
     },
+
     async createVideo(req: Request, res: Response) {
         try {
             const creatorId = req.userId
@@ -49,17 +49,19 @@ export const videoController = {
             return errorHandler(req, res, err)
         }
     },
+
     async deleteVideo(req: Request, res: Response) {
         try {
             const { id } = req.params
 
             const deleteVideo = await prisma.video.delete({ where: { id: id } })
 
-            return res.status(204)
+            return res.status(204).json()
         } catch (err) {
             return errorHandler(req, res, err)
         }
     },
+
     async watchVideo(req: Request, res: Response) {
         const { id } = req.params
         try {
@@ -79,9 +81,7 @@ export const videoController = {
             return errorHandler(req, res, err)
         }
     },
-    //#endregion
     
-    //#region : Thumbnail
     async saveThumbnail(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -100,6 +100,7 @@ export const videoController = {
             return errorHandler(req, res, err)
         }
     },
+
     async showThumbnail(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -116,7 +117,6 @@ export const videoController = {
             return errorHandler(req, res, err)
         }
     },
-    //#endregion
 
     async likeVideo(req: Request, res: Response) {
         try {
@@ -135,4 +135,5 @@ export const videoController = {
             return errorHandler(req, res, err)
         }
     },
+    
 }

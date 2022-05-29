@@ -6,7 +6,6 @@ import { generateToken } from '../services/jwt'
 import { errorHandler } from '../middlewares/errorHandler'
 
 export const userController = {
-    //#region : CRUD User
     async getUsers(req: Request, res: Response) {
         try {
             const allUsers = await prisma.user.findMany({ select: cleanUser })
@@ -16,6 +15,7 @@ export const userController = {
             return errorHandler(req, res, err)
         }
     },
+
     async createUser(req: Request, res: Response) {
         try {
             const { name, email, password } = req.body
@@ -29,17 +29,19 @@ export const userController = {
             return errorHandler(req, res, err)
         }
     },
+
     async deleteUser(req: Request, res: Response) {
         try {
             const id = req.userId
 
             const user = await prisma.user.delete({ where: {id: id} })
 
-            return res.status(204)
+            return res.status(204).json()
         }catch(err) {
             return errorHandler(req, res, err)
         }
     },
+
     async getUser(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -51,9 +53,7 @@ export const userController = {
             return errorHandler(req, res, err)
         }
     },
-    //#endregion
 
-    //#region : Avatar
     async saveAvatar(req: Request, res: Response) {
         try {
             const id = req.userId
@@ -72,6 +72,7 @@ export const userController = {
             return errorHandler(req, res, err)
         }
     },
+
     async getAvatar(req: Request, res: Response) {
         try {
             const { id } = req.params
@@ -85,23 +86,7 @@ export const userController = {
             return errorHandler(req, res, err)
         }
     },
-    //#endregion
-
-    async getVideosLiked(req: Request, res: Response) {
-        try {
-            const { id } = req.params
-
-            const videosLiked = await prisma.likes.findMany({
-                select: { videoId: true },
-                where: { userId: id },
-            })
-
-            return res.json(videosLiked)
-        } catch (err) {
-            return errorHandler(req, res, err)
-        }
-    },
-
+    
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body

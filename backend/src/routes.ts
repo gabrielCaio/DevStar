@@ -4,6 +4,7 @@ const router = Router()
 import { userController } from './controllers/userController'
 import { videoController } from './controllers/videoController'
 import { commentController } from './controllers/commentController'
+import { likeController } from './controllers/likeController'
 import { authUser } from './middlewares/authUser'
 
 // Test
@@ -19,7 +20,6 @@ router.post('/user/login', userController.login)
 
 router.patch('/user/saveAvatar', authUser, userController.saveAvatar)
 router.get('/user/getAvatar/:id', userController.getAvatar)
-router.get('/user/videosLiked/:id', userController.getVideosLiked)
 
 
 // --------------- Video -------------------
@@ -40,6 +40,15 @@ router.post('/comment/create', authUser, commentController.createComment)
 router.get('/comment/listVideo/:id', commentController.listCommentsVideo)
 router.get('/comment/listUser/:id', commentController.listCommentsUser)
 router.get('/comment/listAll', commentController.listAllComments)
-router.delete('/comment/delete', authUser, commentController.deleteComment)
+router.delete('/comment/delete/:id', authUser, commentController.deleteComment)
+
+
+// ------------------ Likes ----------------------
+
+router.get('/likes/listAll', likeController.listAll)
+router.patch('/likes/likeVideo', authUser, likeController.likeVideo)
+router.patch('/likes/dislikeVideo', authUser, likeController.dislikeVideo)
+router.get('/likes/video/:id', likeController.getLikesFromVideo)
+router.get('/likes/user', authUser, likeController.getLikesFromUser)
 
 export default router

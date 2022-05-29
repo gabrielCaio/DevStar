@@ -66,7 +66,7 @@ export const commentController = {
 
             const aux = await prisma.comments.delete({ where: { id: id } })
 
-            return res.status(204)
+            return res.status(204).json()
         } catch (err) {
             return errorHandler(req, res, err)
         }
