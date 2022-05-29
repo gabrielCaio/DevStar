@@ -39,5 +39,7 @@ router.patch('/video/like', videoController.likeVideo)
 router.post('/comment/create', authUser, commentController.createComment)
 router.get('/comment/listVideo/:id', commentController.listCommentsVideo)
 router.get('/comment/listUser/:id', commentController.listCommentsUser)
+router.get('/comment/listAll', commentController.listAllComments)
+router.delete('/comment/delete', authUser, commentController.deleteComment)
 
 export default router

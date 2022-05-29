@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { prisma } from '../database/client'
-import { VideoWithComments } from '../database/models/Video'
 
 export const commentController = {
     async createComment(req: Request, res: Response) {
@@ -43,6 +42,33 @@ export const commentController = {
             return res.json(comments)
         } catch (err) {
             return res.status(500).json({ error: "Error Getting comments"})
+        }
+    },
+
+    async listAllComments(req: Request, res: Response) {
+        try {
+            const comments = await prisma.comments.findMany()
+
+            return res.json(comments)
+        } catch (err) {
+            return res.status(500).json({ error: "Server error"})
+        }
+    },
+
+    async deleteComment(req: Request, res: Response) {
+        try {
+            const { userId } = req
+            const { id } = req.params
+
+            const auxComment = await prisma.comments.findUnique({ where: { id: id } })
+
+            if(userId !== auxComment?.authorId) return res.status(401).send({ error: "User not authorized" })
+
+            const aux = await prisma.comments.delete({ where: { id: id } })
+
+            return res.status(204).json()
+        } catch (err) {
+            return res.status(500).json({ error: "Server Error"})
         }
     },
 }
