@@ -1,7 +1,8 @@
-function Register() {
-    return (
-        <h1>Register</h1>
-    )
-}
+import { Container } from './styles'
 
-export default Register
+export default function Register() {
+    return (
+        <Container>
+            <h1>Register</h1>
+        </Container>
+    )}
