@@ -1,4 +1,5 @@
 function App() {
+  console.log("teste");
 
   return (
     <div>
