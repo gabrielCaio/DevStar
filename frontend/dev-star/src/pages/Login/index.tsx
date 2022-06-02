@@ -1,7 +1,10 @@
-function Login() {
-    return(
-        <h1>Login</h1>
+import { Container } from './styles'
+// import { DefaultButton } from '../../components'
+
+export default function Login() {
+    return (
+        <Container>
+            <h1>Login</h1>
+        </Container>
     )
 }
-
-export default Login
