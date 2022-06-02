@@ -1,5 +1,5 @@
 import { Container } from './styles'
-import { DefaultButton } from '../../components'
+// import { DefaultButton } from '../../components'
 
 export default function Login() {
     return (
