@@ -9,7 +9,8 @@ export interface TextInputProps {
     onFocus?: React.FocusEventHandler<HTMLInputElement>,
     styleProps?: Props,
     hasError?: boolean,
-    errorMessage?: string
+    errorMessage?: string,
+    pattern?: string
 }
 
 export function TextInput(props: TextInputProps) {
@@ -23,6 +24,7 @@ export function TextInput(props: TextInputProps) {
                 onFocus={props?.onFocus}
                 height={props?.styleProps?.height}
                 padding={props?.styleProps?.padding}
+                pattern={props?.pattern}
             />
             {props.hasError && <ErrorMessage>{props.errorMessage}</ErrorMessage>}
         </InputArea>
