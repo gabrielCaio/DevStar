@@ -9,7 +9,6 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-
     background-color: ${colors.black};
 
     #area-logo {

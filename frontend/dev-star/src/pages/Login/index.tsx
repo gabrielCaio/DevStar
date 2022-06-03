@@ -61,7 +61,7 @@ export default function Login() {
             </LoginContainer>
 
             <RedirectText>
-                <p onClick={redirectToRegister} >Não possui conta? <strong>Faça Login</strong></p>
+                <p onClick={redirectToRegister} >Não possui conta? <strong>Cadastre-se</strong></p>
             </RedirectText>
         </Container>
     )

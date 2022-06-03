@@ -10,7 +10,9 @@ export interface TextInputProps {
     styleProps?: Props,
     hasError?: boolean,
     errorMessage?: string,
-    pattern?: string
+    pattern?: string,
+    required?: boolean,
+    value?: any,
 }
 
 export function TextInput(props: TextInputProps) {
@@ -19,12 +21,14 @@ export function TextInput(props: TextInputProps) {
             <Input
                 placeholder={props?.placeholder}
                 type={props?.type}
+                value={props?.value}
                 onChange={props?.onChange}
                 onKeyDown={props?.onKeyDown}
                 onFocus={props?.onFocus}
                 height={props?.styleProps?.height}
                 padding={props?.styleProps?.padding}
                 pattern={props?.pattern}
+                required={props?.required}
             />
             {props.hasError && <ErrorMessage>{props.errorMessage}</ErrorMessage>}
         </InputArea>
