@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { Container, InputArea, ErrorMessage, LoginText } from './styles'
+import { Container, RegisterContainer } from './styles'
 import { TextInput, DefaultButton } from '../../components'
+import { useNavigate } from 'react-router-dom'
 
-interface UserData {
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-}
+import { isEmailValid } from '../../utils'
+
+import { Logo } from '../../assets'
 
 interface ErrorRegister {
     error: boolean,
@@ -21,48 +19,53 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<ErrorRegister>({ error: false, message: ""});
 
-    function registerUser() {
-        const userData: UserData = { name, email, password, confirmPassword }
+    const navigate = useNavigate()
 
-        const valid = validateData(userData)
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = { name, email, password, confirmPassword }
 
-        if(valid.error) return setError(valid)
-
-        // TODO: Send data to backend
-        console.log(userData)
-    }
-
-    function handleKeyPress(e: any) {
-        if(e.key === 'Enter') registerUser();
-    }
-
-    function validateData(data: UserData): ErrorRegister {
-        
-        if(data.password !== data.confirmPassword) return { error: true, message: "Senhas não conferem" }
-        return { error: false, message: ""}
+        console.log(formData);
     }
 
     return (
         <Container>
-            <h1>Cadastro</h1>
+            <Logo width='120' />
 
-            <InputArea>
-                <TextInput placeholder='Nome' onChange={e => setName(e.target.value)} />
-                <TextInput placeholder='Email' onChange={e => setEmail(e.target.value)} />
-                <TextInput placeholder='Senha' onChange={e => setPassword(e.target.value)} />
-                <TextInput
-                    placeholder='Confirmar Senha'
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                />
-            </InputArea>
+            <RegisterContainer>
+                <h1>Cadastro</h1>
 
-            <div>
-                <DefaultButton onClick={registerUser} >Realizar cadastro</DefaultButton>
-                {error.error && <ErrorMessage>{error.message}</ErrorMessage>}
-            </div>
+                <form onSubmit={e => handleSubmit(e)} >
+                    <TextInput
+                        placeholder="Nome"
+                        required
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                    />
+                    <TextInput
+                        placeholder="Email"
+                        required
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                    <TextInput
+                        placeholder="Senha"
+                        required
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    <TextInput
+                        placeholder="Confirmar Senha"
+                        required
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                    />
 
+                    <DefaultButton id="bt" type="submit" >Cadastrar</DefaultButton>
+                </form>
 
-            <LoginText>Já possui conta? <p>Faça Login</p></LoginText>
+            </RegisterContainer>
+
+            <p onClick={() => navigate('/')} >Já possui conta? <strong>Faça Login</strong></p>
         </Container>
     )}

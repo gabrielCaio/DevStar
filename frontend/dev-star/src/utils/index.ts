@@ -1,2 +1,2 @@
 export { colors } from './colors'
-export { isEmailValid } from './isEmail'
+export { isEmailValid, re } from './isEmail'

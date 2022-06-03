@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { colors } from '../../utils'
+
 export const Container = styled.div`
     width: 100vw;
     height: 100vh;
@@ -7,40 +9,48 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-
-    div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-`
-
-export const InputArea = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-`
-
-export const ErrorMessage = styled.h3`
-    font-size: 0.8rem;
-    color: #FC492B;
-`
-
-export const LoginText = styled.h3`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: 0.5s;
-
-    &:hover {
-        opacity: 0.8;
-    }
+    background-color: ${colors.black};
 
     p {
-        margin-left: 5px;
+        cursor: pointer;
+        transition: 0.5s;
+        color: ${colors.white};
+
+        &:hover {
+            filter: brightness(0.7);
+        }
     }
 `
+
+export const RegisterContainer = styled.div`
+    width: 30%;
+    height: 60%;
+    padding-inline: 40px;
+    padding-block: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    background-color: ${colors.white};
+    border: 5px solid ${colors.orange};
+    border-radius: 10px;
+
+    h1 {
+        height: 10%;
+        font-size: 18px;
+    }
+
+    form {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        #bt {
+            margin-top: 20px;
+        }
+    }
+`;
