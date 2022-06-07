@@ -23,12 +23,12 @@ export default function Login() {
 
     // TODO: Implement this function
     async function logUser() {
-        alert('logado')
+        navigate('/home')
     }
 
     const handleLogin = async () => {
-        if(password === "") return setError({ error: true, message: "Senha não informada"})
-        if(isEmailValid(email) === false) return setError({ error: true, message: "Email invalido"})
+        // if(password === "") return setError({ error: true, message: "Senha não informada"})
+        // if(isEmailValid(email) === false) return setError({ error: true, message: "Email invalido"})
 
         await logUser()
     }
