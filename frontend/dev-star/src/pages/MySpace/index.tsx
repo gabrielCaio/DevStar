@@ -1,13 +1,13 @@
 import { Container } from './styles'
+import { NavBar, Header } from '../../components'
 
-import { Header, NavBar } from '../../components'
-
-export default function Home() {
+export default function MySpace() {
     return (
         <Container>
             <Header />
             <NavBar />
-            <h1>Home</h1>
+
+            MySpace
         </Container>
     )
 }
